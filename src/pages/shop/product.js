@@ -1,5 +1,8 @@
+
+
 const Product = (props)=> {
     const {id, productImage, productName, price} = props.data;
+    
     return(
         <div className="col-3">
             <img src={productImage} alt={productName} className="w-100"/>
