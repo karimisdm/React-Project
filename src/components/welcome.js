@@ -1,12 +1,18 @@
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 const Welcome = ()=>{
+
+    useEffect(()=>{
+        const data = JSON.parse(localStorage.getItem("show-welcome"));
+        setVisible(data === null ? true: data)
+    },[])
     
-    const [visible, setVisible] = useState(true);
+    const [visible, setVisible] = useState();
     const handleWelcoming = ()=>{
         setVisible(false);
+        localStorage.setItem("show-welcome", JSON.stringify(false));
     }
     return(
         <React.Fragment>

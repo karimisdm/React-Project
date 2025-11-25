@@ -11,7 +11,7 @@ const Cart = ()=>{
         <div className="row">
           {
             Products.map((product)=>{
-                if(cartItems.find(cartItem => cartItem.id === product.id && cartItem.count > 0))
+                if(cartItems?.find(cartItem => cartItem.id === product.id && cartItem.count > 0))
                     return <Product data={product}/>
                 else
                     return null;    

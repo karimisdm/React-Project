@@ -6,7 +6,7 @@ import { ShopContext } from "../context/shopContext";
 
 const Nav = ()=>{
     const {cartItems} = useContext(ShopContext);
-    const totalItems = cartItems.reduce((pre, current)=> {return pre + current.count}, 0);
+    const totalItems = cartItems?.reduce((pre, current)=> {return pre + current.count}, 0);
    
     return(
         <div className="navbar navbar-dark bg-dark navbar-expand-lg">

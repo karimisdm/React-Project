@@ -1,37 +1,48 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const ShopContext = createContext(null);
 
-export const ShopContextProvider = (props)=>{
+export const ShopContextProvider = (props) => {
 
-    const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
     
-    const addToCart = (itemId)=> {
-        if(!cartItems?.find(item => item.id === itemId)){
-           setCartItems([...cartItems, {id: itemId, count: 1}]);
-        }
-        else{
-            setCartItems(cartItems.map((item)=> {
-                if(item.id === itemId)
-                    return {...item, count: item.count + 1};
-                return item;
-            }));
-        }
-       
+    const stored = localStorage.getItem("cart-items");
+    return stored ? JSON.parse(stored) : [];
+  });
 
-    };
-    const removeFromCart = (itemId)=> {
-        setCartItems(cartItems.map((item)=> {
-            if(item.id === itemId)
-                return {...item, count: item.count===0?0 : item.count -1};
-            return item;
-        }));
+  useEffect(() => {
+    localStorage.setItem("cart-items", JSON.stringify(cartItems));
+  }, [cartItems]);
 
-    };
+  const addToCart = (itemId) => {
+    const exists = cartItems.find(item => item.id === itemId);
 
-    const contextValue = {cartItems, addToCart, removeFromCart};
+    if (!exists) {
+      setCartItems([...cartItems, { id: itemId, count: 1 }]);
+    } else {
+      setCartItems(
+        cartItems.map(item =>
+          item.id === itemId ? { ...item, count: item.count + 1 } : item
+        )
+      );
+    }
+  };
 
-    return <ShopContext.Provider value={contextValue}> {props.children} </ShopContext.Provider>
+  const removeFromCart = (itemId) => {
+    setCartItems(
+      cartItems.map(item =>
+        item.id === itemId
+          ? { ...item, count: item.count === 0 ? 0 : item.count - 1 }
+          : item
+      )
+    );
+  };
 
+  const contextValue = { cartItems, addToCart, removeFromCart };
 
-}
+  return (
+    <ShopContext.Provider value={contextValue}>
+      {props.children}
+    </ShopContext.Provider>
+  );
+};
