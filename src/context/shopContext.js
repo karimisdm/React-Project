@@ -16,7 +16,6 @@ export const ShopContextProvider = (props)=>{
                     return {...item, count: item.count + 1};
                 return item;
             }));
-            console.log(cartItems);
         }
        
 
